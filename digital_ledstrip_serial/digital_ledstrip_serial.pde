@@ -75,17 +75,20 @@ void draw() {
     for(int i = -freqToSendSize/2+1; i < freqToSendSize/2; i++) {
       avgVal = (avgVal+s2l.freq(freqToSend+i))/2;
     }
-    if(avgVal > val) val+=(avgVal-val)/2;
-    if(avgVal < val) val-=(val-avgVal)/2;
+    if(avgVal > val) val=avgVal;
+    if(avgVal < val) val-=(val-avgVal)/4;
     
     if(val > 20*4) val/=1.3;
     if(val > 23*4) val/=1.5;
     if(val > 25*4) val/=2;
     
+    if(val < 0) val = 0;
     
       sendDmx(1000, 2);
       sendDmx(1021, 0);
       sendDmx(1022, val/4);
+      
+      println(val/4);
       delay(30);
       stroke(200, 200, 200);
      for(int i = 0; i < 100; i++) {
@@ -127,7 +130,7 @@ void keyPressed() {
       sendColorPreset(i);
     }
   }
-  println(keyCode);
+
   
   if(keyCode == UP) {
     freqToSend++;
