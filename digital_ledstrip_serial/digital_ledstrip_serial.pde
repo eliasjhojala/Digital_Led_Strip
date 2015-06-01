@@ -34,7 +34,7 @@ float sample_rate = 44100;                                                      
 soundDetect s2l;
 
 void setup() {
-  size(300, 300);
+  size(255, 300);
   myPort = new Serial(this, Serial.list()[serialIndex], baudRate);
   delay(2000);
   for(int i = 0; i < 50; i++) {
@@ -64,7 +64,7 @@ long lastSend = 0;
 
 int freqToSendSize = 40;
 
-int val = 0;
+float val = 0;
 
 void draw() {
   background(0);
@@ -75,8 +75,8 @@ void draw() {
     for(int i = -freqToSendSize/2+1; i < freqToSendSize/2; i++) {
       avgVal = (avgVal+s2l.freq(freqToSend+i))/2;
     }
-    if(avgVal > val) val=avgVal;
-    if(avgVal < val) val-=(val-avgVal)/4;
+    if(min(avgVal, 25*4) > val) val=avgVal;
+    if(max(avgVal, 0) < val) val-=(val-avgVal)/10;
     
     if(val > 20*4) val/=1.3;
     if(val > 23*4) val/=1.5;
@@ -86,14 +86,14 @@ void draw() {
     
       sendDmx(1000, 2);
       sendDmx(1021, 0);
-      sendDmx(1022, val/4);
+      sendDmx(1022, int(val/4));
       
       println(val/4);
       delay(30);
       stroke(200, 200, 200);
      for(int i = 0; i < 100; i++) {
        if(i == freqToSend) {
-         pushMatrix(); pushStyle(); strokeWeight(freqToSendSize); stroke(255, 0, 100);
+         pushMatrix(); pushStyle(); strokeWeight(freqToSendSize); stroke(presets[actualColorPreset]);
        }
        if((i > freqToSend && i - freqToSendSize/2 > freqToSend) || (i < freqToSend && i + freqToSendSize/2 < freqToSend)) {
          line(0, i, s2l.freq(i), i);
@@ -106,7 +106,7 @@ void draw() {
      fill(255);
      text(freqToSend, 50, 150);
      
-     if(s2l.beat(2) && !beatWasHere && millis() > lastSend + 100) { actualColorPreset++; if(actualColorPreset > 8) { actualColorPreset = 0; } sendColorPreset(actualColorPreset); beatWasHere = true; lastSend = millis(); }
+     if(s2l.beat(2) && !beatWasHere && millis() > lastSend + 100) { actualColorPreset++; if(actualColorPreset > 5) { actualColorPreset = 0; } sendColorPreset(actualColorPreset); beatWasHere = true; lastSend = millis(); }
      if(!s2l.beat(2)) beatWasHere = false;
   }
   else {
@@ -141,6 +141,7 @@ void keyPressed() {
   
   if(keyCode == LEFT) {
     freqToSendSize--;
+    if(freqToSendSize <= 1) freqToSendSize = 1;
   }
   if(keyCode == RIGHT) {
     freqToSendSize++;
