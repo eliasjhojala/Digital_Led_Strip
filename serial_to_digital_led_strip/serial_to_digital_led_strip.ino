@@ -10,6 +10,8 @@ int messageLengthCame = 0;
 int inputValue[513];
 boolean inputValueChanged[513];
 
+int presets[10][513];
+
 int mode = 0;
 int SINGLE_BAR_MODE = 2;
 int singleBarLength = 0;
@@ -39,6 +41,7 @@ void loop() {
       else if (c=='w') {
          if(channel > 0 && channel <= 512) { 
            inputValue[channel-1] = value; 
+           messageLengthCame++;
          }
          else {
            receiveSpecialChannel(channel, value);
@@ -51,7 +54,7 @@ void loop() {
   }
   
   if(mode == RAINBOW_MODE) {
-    rainbowCycle(10);
+    rainbowCycle(30);
   }
   else {
   
@@ -95,6 +98,9 @@ void receiveSpecialChannel(int ch, int val) {
     case 101: setRed(val); break;
     case 102: setGreen(val); break;
     case 103: setBlue(val); break;
+    
+//    case 201: saveAsPreset(val); break;
+//    case 202: loadFromPreset(val); break;
     
     case 999: showNow = true; break;
   }
@@ -162,6 +168,24 @@ void setBlue(int v) {
     inputValue[i*4+2] = v;
   }
 }
+
+
+
+
+//void saveAsPreset(int id) {
+//  id = constrain(id, 0, 9);
+//  for(int i = 0; i < 200; i++) {
+//    presets[id][i] = inputValue[i];
+//  }
+//}
+
+//void loadFromPreset(int id) {
+//  id = constrain(id, 0, 9);
+//  for(int i = 0; i < 200; i++) {
+//     inputValue[i] = presets[id][i];
+//  }
+//  showNow = true;
+//}
 
 
 

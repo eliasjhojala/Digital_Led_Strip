@@ -22,12 +22,12 @@ void rainbow(uint8_t wait) {
 uint16_t rainbowJ = 0;
 uint16_t rainbowI = 0;
 
+
 // Slightly different, this makes the rainbow equally distributed throughout
 void rainbowCycle(uint8_t wait) {
-
   rainbowI++;
   
-  if(rainbowI >= strip.numPixels()) {
+  if(rainbowI >= 100) {
     rainbowJ++;
     if(rainbowJ >= 256*5) {
       rainbowJ = 0;
@@ -37,9 +37,8 @@ void rainbowCycle(uint8_t wait) {
     delay(wait);
   }
   
-  strip.setPixelColor(rainbowI, Wheel(((rainbowI * 256 / strip.numPixels()) + rainbowJ) & 255));
-  
-  
+  strip.setPixelColor(rainbowI, Wheel(((rainbowI * 256 / 100) + rainbowJ) & 255));
+
  
 }
 
