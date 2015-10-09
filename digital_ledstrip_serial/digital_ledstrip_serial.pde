@@ -12,6 +12,7 @@ void draw() {
       if(min(avgVal, 25*4) > val) val=avgVal;
       if(max(avgVal, 0) < val) val-=(val-avgVal)/10;
       
+      if(val > 15*4) val/= 1.2;
       if(val > 20*4) val/=1.3;
       if(val > 23*4) val/=1.5;
       if(val > 25*4) val/=2;

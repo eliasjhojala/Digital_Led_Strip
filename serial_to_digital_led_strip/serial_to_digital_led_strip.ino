@@ -60,7 +60,10 @@ void loop() {
   
     if(comingMessageLength < messageLengthCame || showNow) {
       for(int i = 0; i < 25; i++) {
-        setLedStripValue(i, inputValue[i*4], inputValue[i*4+1], inputValue[i*4+2], inputValue[i*4+3]);
+        setLedStripValue(i*2-1, inputValue[i*4], inputValue[i*4+1], inputValue[i*4+2], inputValue[i*4+3]);
+      } 
+      for(int i = 0; i < 25; i++) {
+        setLedStripValue(i*2, inputValue[i*4], inputValue[i*4+1], inputValue[i*4+2], inputValue[i*4+3]);
       } 
       strip.show();
       messageLengthCame = 0;

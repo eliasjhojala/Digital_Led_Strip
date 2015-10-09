@@ -34,8 +34,7 @@ float sample_rate = 44100;                                                      
 soundDetect s2l;
 
 void setup() {
-  size(255, 300);
-  myPort = new Serial(this, "/dev/tty.usbmodem14211", baudRate);
+  myPort = new Serial(this, "/dev/cu.usbmodem1421", baudRate);
   delay(2000);
   for(int i = 0; i < 50; i++) {
     sendDmx(i*4+4, 255);
