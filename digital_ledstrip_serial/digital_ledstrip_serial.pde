@@ -5,12 +5,19 @@ void draw() {
     if(useFreq) {
       
       int avgVal = 0;
+      int maxVal = 0;
+      int valToUse = 0;
       avgVal = s2l.freq(freqToSend-freqToSendSize/2);
+      maxVal = s2l.freq(freqToSend-freqToSendSize/2);
       for(int i = -freqToSendSize/2+1; i < freqToSendSize/2; i++) {
         avgVal = (avgVal+s2l.freq(freqToSend+i))/2;
+        maxVal = max(maxVal, s2l.freq(freqToSend+i));
       }
-      if(min(avgVal, 25*4) > val) val=avgVal;
-      if(max(avgVal, 0) < val) val-=(val-avgVal)/10;
+      
+      valToUse = maxVal;
+      
+      if(min(valToUse, 25*4) > val) val=valToUse;
+      if(max(valToUse, 0) < val) val-=(val-valToUse)/10;
       
       if(val > 15*4) val/= 1.2;
       if(val > 20*4) val/=1.3;
